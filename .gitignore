@@ -14,4 +14,3 @@ logs/
 # Variáveis de Ambiente e Arquivos de Credenciais
 .env
 .env.local
-src/main/resources/application.yml

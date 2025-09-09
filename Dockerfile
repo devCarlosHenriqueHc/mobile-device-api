@@ -1,29 +1,29 @@
-# Use a common and robust JDK image for the build stage
+# Usa uma imagem robusta do OpenJDK para o processo de build
 FROM openjdk:17-jdk-slim as builder
 
-# Define the working directory inside the container
+# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copy the pom.xml file to the container
+# Copia o arquivo pom.xml para o container
 COPY pom.xml .
 
-# Download Maven dependencies
+# Baixa as dependências do Maven (acelera o build)
 RUN mvn dependency:go-offline -B
 
-# Copy the rest of the source code
+# Copia todo o código-fonte restante
 COPY . .
 
-# Compile the project and generate the JAR file
+# Compila o projeto e gera o arquivo JAR
 RUN mvn clean install -DskipTests
 
-# Use the same lightweight JRE image for the final runtime stage
-FROM openjdk:17-jre-slim
+# Usa uma imagem JRE diferente e confiável para a execução
+FROM eclipse-temurin:17-jre-alpine
 
-# Copy the compiled JAR file from the builder stage
+# Copia o arquivo JAR compilado da etapa 'builder'
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose the application port
+# Expõe a porta que a aplicação vai rodar
 EXPOSE 8080
 
-# Command to run the application
+# Comando para rodar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]

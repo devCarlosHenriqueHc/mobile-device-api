@@ -1,0 +1,17 @@
+# Maven
+/target/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Variáveis de Ambiente e Arquivos de Credenciais
+.env
+.env.local
+src/main/resources/application.yml

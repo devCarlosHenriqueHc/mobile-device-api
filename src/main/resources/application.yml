@@ -46,7 +46,7 @@ spring:
 
 ---
 # Configuração para TESTES (Perfil: test)
-# Usa um banco de dados H2 em memória separado para isolar os testes.
+# Usa um banco de dados H2 em memória separado para isolar os testes..
 spring:
   config:
     activate:

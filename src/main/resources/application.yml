@@ -1,64 +1,57 @@
-# Configurações Padrão/Comuns para todos os perfis.
 spring:
-  jpa:
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
+  profiles:
+    active: prod
 
 ---
-# Configuração para DESENVOLVIMENTO (Perfil: dev)
-# Usa um banco de dados H2 em memória para testes locais.
+
 spring:
   config:
     activate:
       on-profile: dev
 
   datasource:
-    url: jdbc:h2:mem:celldb
-    username: sa
-    password: password
-    driver-class-name: org.h2.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
     show-sql: true
 
 ---
-# Configuração para PRODUÇÃO (Perfil: prod)
-# Conecta ao seu banco de dados real no Supabase.
+
 spring:
   config:
     activate:
       on-profile: prod
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
     show-sql: false
 
 ---
-# Configuração para TESTES (Perfil: test)
-# Usa um banco de dados H2 em memória separado para isolar os testes.
+
 spring:
   config:
     activate:
       on-profile: test
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: password
-    driver-class-name: org.h2.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    open-in-view: false
     show-sql: true

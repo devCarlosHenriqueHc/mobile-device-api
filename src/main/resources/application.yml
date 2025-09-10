@@ -1,10 +1,6 @@
-# Configurações Padrão/Comuns para todos os perfis.
 spring:
-  jpa:
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
+  profiles:
+    active: prod
 
 ---
 # Configuração para DESENVOLVIMENTO (Perfil: dev)

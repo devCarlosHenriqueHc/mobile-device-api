@@ -1,32 +1,16 @@
-# Use a robust OpenJDK image for the build process
-FROM openjdk:17-jdk-slim as builder
+FROM ubuntu:latest AS build
 
-# Define the working directory inside the container
-WORKDIR /app
-
-# Install Maven
-RUN apt-get update && apt-get install -y maven
-
-# Copy the pom.xml file to the container
-COPY pom.xml .
-
-# Download Maven dependencies
-RUN mvn dependency:go-offline -B
-
-# Copy the rest of the source code
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
 COPY . .
 
-# Compile the project and generate the JAR file
-RUN mvn clean install -DskipTests
+RUN apt-get install maven -y
+RUN mvn clean install
 
-# Use a lightweight and reliable JRE image for execution
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-jdk-slim
 
-# Copy the compiled JAR file from the builder stage
-COPY --from=builder /app/target/*.jar app.jar
-
-# Expose the application port
 EXPOSE 8080
 
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
+COPY --from=build /target/cellphones-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
